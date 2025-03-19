@@ -11,11 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $stmt->get_result();
     $usuario = $result->fetch_assoc();
 
-    if ($usuario && password_verify($contraseña, $usuario['contraseña'])) {
+    if ($usuario && password_verify($contraseña, $usuario['password'])) {
         session_start();
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['nombre'] = $usuario['nombre'];
-        header("Location: foro.php");
+        header("Location: ../frontend/foro.html");
     } else {
         echo "Nombre o contraseña incorrectos";
     }

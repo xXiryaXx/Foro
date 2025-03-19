@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contraseña = password_hash($_POST['contraseña'], PASSWORD_DEFAULT);
     $imagen = file_get_contents($_FILES['imagen']['tmp_name']);
 
-    $stmt = $conn->prepare("INSERT INTO usuarios (nombre, contraseña, imagen) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO usuarios (nombre, password, imagen) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $nombre, $contraseña, $imagen);
 
     if ($stmt->execute()) {

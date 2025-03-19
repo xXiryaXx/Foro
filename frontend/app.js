@@ -7,47 +7,17 @@ function cargarPublicaciones() {
             data.forEach(post => {
                 postsHtml += `
                     <div class="post">
-                        <h3>${post.tema} - <small>${post.nombre}</small></h3>
+                        <div class="usuario">
+                            <img src="data:image/jpeg;base64,${post.imagen}" alt="Imagen de ${post.nombre}" class="avatar" />
+                            <h3>${post.tema} - <small>${post.nombre}</small></h3>
+                        </div>
                         <p>${post.contenido}</p>
-                        <button onclick="reaccionar(${post.id}, 'like')">👍 (${post.likes})</button>
-                        <button onclick="reaccionar(${post.id}, 'dislike')">👎 (${post.dislikes})</button>
+                        <button onclick="reaccionar(${post.id}, 'like')">Like(${post.likes})</button>
+                        <button onclick="reaccionar(${post.id}, 'dislike')">Dislike(${post.dislikes})</button>
                     </div>
                 `;
             });
             document.getElementById('postsContainer').innerHTML = postsHtml;
-        });
-}
-
-// Crear nueva publicación
-document.getElementById('formPost').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    fetch('../backend/crear_post.php', {
-        method: 'POST',
-        body: formData
-    }).then(response => response.json()).then(data => {
-        if (data.success) {
-            cargarPublicaciones(); // Actualizar en tiempo real
-        } else {
-            alert(data.message);
-        }
-    });
-});
-
-// Reaccionar a una publicación
-function reaccionar(publicacion_id, tipo) {
-    fetch('../backend/reaccionar.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `publicacion_id=${publicacion_id}&tipo=${tipo}`
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                cargarPublicaciones(); // Actualizar en tiempo real
-            } else {
-                alert(data.message);
-            }
         });
 }
 
