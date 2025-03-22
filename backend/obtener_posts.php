@@ -1,10 +1,9 @@
 <?php
 include 'conexion.php';
 
-$sql = "SELECT p.id, p.tema, p.contenido, u.nombre, 
+$sql = "SELECT p.id, p.tema, p.contenido, u.nombre, u.imagen,
         (SELECT COUNT(*) FROM reacciones WHERE publicacion_id = p.id AND tipo_reaccion = 'like') AS likes,
-        (SELECT COUNT(*) FROM reacciones WHERE publicacion_id = p.id AND tipo_reaccion = 'dislike') AS dislikes,
-        u.imagen
+        (SELECT COUNT(*) FROM reacciones WHERE publicacion_id = p.id AND tipo_reaccion = 'dislike') AS dislikes
         FROM publicaciones p
         JOIN usuarios u ON p.usuario_id = u.id
         ORDER BY p.created_at DESC";
@@ -14,7 +13,7 @@ $posts = [];
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Convertir imagen LONGBLOB a base64
+        // Convertir la imagen a base64
         $row['imagen'] = base64_encode($row['imagen']);
         $posts[] = $row;
     }
